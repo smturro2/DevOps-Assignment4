@@ -1,0 +1,8 @@
+streamlit
+dotenv
+pandas
+
+pytest
+pytest-html
+selenium
+pytest-selenium  # https://pytest-selenium.readthedocs.io/en/latest/user_guide.html#html-report
