@@ -34,11 +34,11 @@ pipeline {
         //     }
         // }
         
-        // stage("build") {
-        //     steps {
-        //         sh 'docker compose up -d --build'
-        //     }
-        // }
+        stage("build") {
+            steps {
+                sh 'docker compose up -d --build'
+            }
+        }
         // stage("integreation test") {
         //     steps {
         //         sh 'docker compose exec web pytest tests --html=reports/report.html --self-contained-html --capture=tee-sys --log-cli-level=INFO'
@@ -46,13 +46,15 @@ pipeline {
         // }
 
         stage("Load Testing") {
-            // Run k6 in a docker container
-            sh '''
-            docker run --rm -i \
-            --network host \
-            -v ${WORKSPACE}/k6-load-tests.js:/k6-load-tests.js \
-            loadimpact/k6 run /k6-load-tests.js
-            '''
+            steps {
+                // Run k6 in a docker container
+                sh '''
+                docker run --rm -i \
+                --network host \
+                -v ${WORKSPACE}/k6-load-tests.js:/k6-load-tests.js \
+                loadimpact/k6 run /k6-load-tests.js
+                '''
+            }
         }
     }
 
