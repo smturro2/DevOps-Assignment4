@@ -13,7 +13,8 @@ RUN echo "deb [arch=$(dpkg --print-architecture) \
 RUN apt-get update && apt-get install -y docker-ce-cli
 
 # Install maven
-RUN apt-get install -y maven
+RUN apt-get update && apt-get install -y maven
+RUN mvn -v
 
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
