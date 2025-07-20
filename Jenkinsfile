@@ -1,12 +1,33 @@
 
 
+// pipeline {
+//     agent any
+
+//     stages {
+//         stage('Hello') {
+//             steps {
+//                 echo 'Hello World'
+//             }
+//         }
+//     }
+// }
+
+
+// Docs:
+// - https://www.jenkins.io/doc/book/pipeline/docker/
+// - youtube tutorial: https://www.youtube.com/watch?v=ZPD_PzGOvFM
 pipeline {
     agent any
-
     stages {
-        stage('Hello') {
+        stage("verify tooling") {
             steps {
-                echo 'Hello World'
+                sh '''
+                docker version
+                docker info
+                docker compose version 
+                curl --version
+                jq --version
+                '''
             }
         }
     }

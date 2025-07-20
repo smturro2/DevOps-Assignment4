@@ -7,16 +7,20 @@ services:
   # see https://github.com/Douglas0n/jenkins-docker/blob/master/docker-compose.yml
   # or See https://github.com/gounthar/MyFirstAndroidAppBuiltByJenkins/blob/main/jenkins/docker-compose.yml
   jenkins:
-    image: jenkins/jenkins:lts
+    build:
+      context: ./src/jenkins
+      dockerfile: Dockerfile
+    # image: jenkins/jenkins:lts
     ports:
       - 8080:8080
       - 50000:50000
     volumes:
       - jenkins-data:/var/jenkins_home
-  jenkins-agent:
-    image: jenkins/ssh-agent:jdk11
-    # environment:
-    #   - JENKINS_AGENT_SSH_PUBKEY=${JENKINS_AGENT_SSH_PUBLIC_KEY}
+      # - /var/run/docker.sock:/var/run/docker.sock  # Bind mount Docker socket so jenkins can use docker
+  # jenkins-agent:
+  #   image: jenkins/ssh-agent:jdk11
+  #   # environment:
+  #   #   - JENKINS_AGENT_SSH_PUBKEY=${JENKINS_AGENT_SSH_PUBLIC_KEY}
 
   # see https://medium.com/@denis.verkhovsky/sonarqube-with-docker-compose-complete-tutorial-2aaa8d0771d4
   sonarqube:
