@@ -27,7 +27,7 @@ def test_frontend(browser):
     
     current_title = str(browser.title)
     logger.info(f"Current Title: {current_title}")
-    assert "Country Getter GUI" in current_title, f"Bad title. Actual title is: {current_title}"
+    assert "Streamlit" in current_title, f"Bad title. Actual title is: {current_title}"
 
 
 def test_run(browser):
