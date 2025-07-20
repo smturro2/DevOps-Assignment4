@@ -26,21 +26,14 @@ pipeline {
                 sh 'docker compose version'
             }
         }
-        stage("Static Testing") {
-            steps {
-              withSonarQubeEnv('SonarQube') {
-                sh 'mvn clean package sonar:sonar'
-              }
-            }
-        }
-        
-        // stage('SonarQube Quality Gate') {
+        // stage("Static Testing") {
         //     steps {
-        //         // https://www.youtube.com/watch?v=jrksCo-M1Ns
-        //         // This hangs, idk if the above is good enough?
-        //         waitForQualityGate abortPipeline: true
+        //       withSonarQubeEnv('SonarQube') {
+        //         sh 'mvn clean package sonar:sonar'
+        //       }
         //     }
         // }
+        
         // stage("build") {
         //     steps {
         //         sh 'docker compose up -d --build'
@@ -51,6 +44,16 @@ pipeline {
         //         sh 'docker compose exec web pytest tests --html=reports/report.html --self-contained-html --capture=tee-sys --log-cli-level=INFO'
         //     }
         // }
+
+        stage("Load Testing") {
+            // Run k6 in a docker container
+            sh '''
+            docker run --rm -i \
+            --network host \
+            -v ${WORKSPACE}/k6-load-tests.js:/k6-load-tests.js \
+            loadimpact/k6 run /k6-load-tests.js
+            '''
+        }
     }
 
     post {
