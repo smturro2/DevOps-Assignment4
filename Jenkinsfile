@@ -21,17 +21,19 @@ pipeline {
     stages {
         stage("verify tooling") {
             steps {
-                sh '''
-                docker version
-                docker info
-                docker compose version 
-                curl --version
-                '''
+                sh 'docker version'
+                sh 'docker info'
+                sh 'docker compose version'
             }
         }
         stage("build") {
             steps {
                 sh 'docker compose up -d --build'
+            }
+        }
+        stage("integreation test") {
+            steps {
+                sh 'docker compose exec web pytest tests --html=reports/report.html --self-contained-html --capture=tee-sys --log-cli-level=INFO'
             }
         }
     }

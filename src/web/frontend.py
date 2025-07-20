@@ -5,6 +5,10 @@ from custom_logger import logger
 from dotenv import load_dotenv
 load_dotenv()
 
+st.set_page_config(
+    page_title="Country Getter GUI",
+)
+
 api_wrapper = APIWrapper(
     api_address=os.getenv('API_ADDRESS'),
     api_port=os.getenv('API_PORT')
