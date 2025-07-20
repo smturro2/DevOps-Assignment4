@@ -26,21 +26,38 @@ pipeline {
                 sh 'docker compose version'
             }
         }
-        stage("build") {
+        stage("static testing") {
             steps {
-                sh 'docker compose up -d --build'
+              withSonarQubeEnv('SonarQube') {
+                sh 'mvn clean package sonar:sonar'
+              }
             }
         }
-        stage("integreation test") {
-            steps {
-                sh 'docker compose exec web pytest tests --html=reports/report.html --self-contained-html --capture=tee-sys --log-cli-level=INFO'
-            }
-        }
+        // stage("build") {
+        //     steps {
+        //         sh 'docker compose up -d --build'
+        //     }
+        // }
+        // stage("integreation test") {
+        //     steps {
+        //         sh 'docker compose exec web pytest tests --html=reports/report.html --self-contained-html --capture=tee-sys --log-cli-level=INFO'
+        //     }
+        // }
+        // stage('load test') {
+        //     steps {
+        //         script {
+        //             // Run k6 container to perform load testing
+        //             sh """
+        //             docker run --rm -i -v \$(pwd):/scripts loadimpact/k6 run /scripts/k6-load-tests.js > k6-output.txt
+        //             """
+        //         }
+        //     }
+        // }
     }
 
-    post {
-        always {
-            sh 'docker compose down'
-        }
-    }
+    // post {
+    //     always {
+    //         sh 'docker compose down'
+    //     }
+    // }
 }

@@ -47,23 +47,6 @@ services:
   #   #   - JENKINS_AGENT_SSH_PUBKEY=${JENKINS_AGENT_SSH_PUBLIC_KEY}
 
   # see https://medium.com/@denis.verkhovsky/sonarqube-with-docker-compose-complete-tutorial-2aaa8d0771d4
-  sonarqube:
-    image: sonarqube:lts-community
-    depends_on:
-      - sonar_db
-    environment:
-      SONAR_JDBC_URL: jdbc:postgresql://sonar_db:5432/sonar
-      SONAR_JDBC_USERNAME: sonar
-      SONAR_JDBC_PASSWORD: sonar
-    ports:
-      - "9001:9000"
-    volumes:
-      - sonarqube_conf:/opt/sonarqube/conf
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_extensions:/opt/sonarqube/extensions
-      - sonarqube_logs:/opt/sonarqube/logs
-      - sonarqube_temp:/opt/sonarqube/temp
-      
   sonar_db:
     image: postgres:13
     environment:
@@ -73,7 +56,25 @@ services:
     volumes:
       - sonar_db:/var/lib/postgresql
       - sonar_db_data:/var/lib/postgresql/data
-      
+
+  sonarqube:
+    image: sonarqube:lts-community
+    depends_on:
+      - sonar_db
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://sonar_db:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_temp:/opt/sonarqube/temp
+         
+
   # see: https://ngrok.com/docs/using-ngrok-with/docker/
   ngrok-jenkins:
     image: ngrok/ngrok:latest
@@ -87,8 +88,55 @@ services:
     ports:
       - 4040:4040
 
+  
+#   influxdb:
+#     image: influxdb:1.8
+# #    entrypoint: /bin/sh
+# #    user: root
+#     networks:
+#       - k6
+#       - grafana
+#     ports:
+#       - "8086:8086"
+#     environment:
+#       - INFLUXDB_DB=k6
+
+#   grafana:
+#     image: grafana/grafana:8.5.21
+# #    entrypoint: /bin/sh
+# #    user: root
+#     networks:
+#       - grafana
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+#       - GF_AUTH_ANONYMOUS_ENABLED=true
+#       - GF_AUTH_BASIC_ENABLED=false
+#       - GF_SERVER_SERVE_FROM_SUB_PATH=true
+#     volumes:
+#       - ./dashboards:/var/lib/grafana/dashboards
+#       - ./grafana-dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+#       - ./grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+
+#   k6:
+#     image: grafana/k6:latest
+# #    entrypoint: /bin/sh
+# #    user: root
+#     networks:
+#       - k6
+#     ports:
+#       - "6565:6565"
+#     environment:
+#       - K6_OUT=influxdb=http://influxdb:8086/k6
+#     volumes:
+#       - ./scripts/load.js:/scripts/load.js
+#       - ./scripts/ewoks.js:/scripts/ewoks.js
+
 networks:
   jenkins:
+  k6:
+  grafana:
 
 volumes:
   sonarqube_conf:
