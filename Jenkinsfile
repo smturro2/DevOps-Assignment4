@@ -34,12 +34,13 @@ pipeline {
             }
         }
         
-        stage('SonarQube Quality Gate') {
-            steps {
-                // https://www.youtube.com/watch?v=jrksCo-M1Ns
-                waitForQualityGate abortPipeline: true
-            }
-        }
+        // stage('SonarQube Quality Gate') {
+        //     steps {
+        //         // https://www.youtube.com/watch?v=jrksCo-M1Ns
+        //         // This hangs, idk if the above is good enough?
+        //         waitForQualityGate abortPipeline: true
+        //     }
+        // }
         // stage("build") {
         //     steps {
         //         sh 'docker compose up -d --build'
@@ -52,9 +53,15 @@ pipeline {
         // }
     }
 
-    // post {
-    //     always {
-    //         sh 'docker compose down'
-    //     }
-    // }
+    post {
+        // always {
+        //     sh 'docker compose down'
+        // }
+        success {
+            slackSend color: "good", message: "Pipeline PASSED"
+        }
+        failure {
+            slackSend color: "bad", message: "Pipeline FAILED!"
+        }
+    }
 }

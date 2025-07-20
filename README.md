@@ -13,6 +13,7 @@
 - .env management
 - running containers in jenkins
 - cant get condition to work for frontend
+- jenkins cache kept fucking up
 
 # Docker tips
 
