@@ -2,6 +2,7 @@ import requests
 from pathlib import Path
 import pandas as pd
 from custom_logger import logger
+from io import StringIO
 import os
 
 class APIWrapper:
@@ -9,22 +10,26 @@ class APIWrapper:
         self.api_address = api_address
         self.api_port = api_port
         self.base_url = r"http://" + self.api_address + ":" +str(self.api_port)
-        logger.info("API wrapper created with Base endpoint: ", self.base_url)
+        logger.info(f"API wrapper created with Base endpoint: {self.base_url}")
 
-    def check_connection():
+        self.check_connection()
+
+    def check_connection(self):
         try:
             response = requests.get(self.base_url)
             response.raise_for_status()
             logger.info("Connection to API successful.")
         except Exception as e:
             logger.error("Connection to API failed.")
+            logger.error("-------------------------------------------------------------")
             logger.exception(e)
+            logger.error("-------------------------------------------------------------")
             raise e
 
 
     def list_countries(self):
         endpoint = self.base_url + r"/list_countries"
-        logger.info("Querying endpoint: ", endpoint)
+        logger.info(f"Querying endpoint: {endpoint}")
         
         try:
             response = requests.get(endpoint)
@@ -33,7 +38,9 @@ class APIWrapper:
             return [x['country'] for x in results]
         except Exception as e:
             logger.error(f"Connection to endpoint failed: {endpoint}")
+            logger.error("-------------------------------------------------------------")
             logger.exception(e)
+            logger.error("-------------------------------------------------------------")
             raise e
             
     def country_data(self, countries=None):
@@ -44,11 +51,13 @@ class APIWrapper:
             response = requests.get(endpoint)
             response.raise_for_status()
             
-            data = pd.read_json(response.text)
+            data = pd.read_json(StringIO(response.text))
             if countries:
                 data = data[data['country'].isin(countries)]
             return data
         except Exception as e:
             logger.error(f"Connection to endpoint failed: {endpoint}")
+            logger.error("-------------------------------------------------------------")
             logger.exception(e)
+            logger.error("-------------------------------------------------------------")
             raise e

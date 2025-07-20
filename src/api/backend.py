@@ -38,13 +38,19 @@ def check_db_connection():
         logger.info("Database connection successful.")
     except Exception as e:
         logger.error("Database connection failed.")
+        logger.error("-------------------------------------------------------------")
         logger.exception(e)
+        logger.error("-------------------------------------------------------------")
         raise e
+
+@app.route('/', methods=['GET'])
+def connection_check():
+    return "1"
 
 
 @app.route('/list_countries', methods=['GET'])
 def get_countries():
-    results = Countries.query.distinct(Countries.country).all()
+    results = db.session.query(Countries.country).group_by(Countries.country).all()
     return json.dumps([{'country': x.country} for x in results])
 
 @app.route('/country_data', methods=['GET'])
@@ -59,7 +65,9 @@ if __name__ == '__main__':
             logger.info("Database tables created successfully.")
         except Exception as e:
             logger.error("Error creating database tables.")
+            logger.error("-------------------------------------------------------------")
             logger.exception(e)
+            logger.error("-------------------------------------------------------------")
             raise e
         
         check_db_connection()

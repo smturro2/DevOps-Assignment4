@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 logger_config = {
     'overall_level': logging.DEBUG,
-    'format': 'LOGGER - %(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    'format': 'LOGGER - %(asctime)s - %(filename)s - %(levelname)s - %(message)s',
     'console_level': logging.DEBUG,
     'file': True,
     'file_level': logging.DEBUG,
