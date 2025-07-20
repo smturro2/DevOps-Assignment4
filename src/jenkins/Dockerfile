@@ -18,4 +18,4 @@ RUN mvn -v
 
 RUN chown -R 1000:1000 /var/jenkins_home
 # USER jenkins
-RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api slack sonar htmlpublisher"

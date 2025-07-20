@@ -9,7 +9,7 @@ logger_config = {
     'overall_level': logging.DEBUG,
     'format': 'LOGGER - %(asctime)s - %(filename)s - %(levelname)s - %(message)s',
     'console_level': logging.DEBUG,
-    'file': True,
+    'file': False,
     'file_level': logging.DEBUG,
     'log_folder': 'logs'
 }
