@@ -4,19 +4,43 @@ services:
   # See: https://hub.docker.com/_/mysql
   # ASKED CHAT GPT: I have a /docker-compose.yml file and a /src/db/schema.sql How do I create my sql db with the schema file?  I use mysql
 
-  # see https://github.com/Douglas0n/jenkins-docker/blob/master/docker-compose.yml
-  # or See https://github.com/gounthar/MyFirstAndroidAppBuiltByJenkins/blob/main/jenkins/docker-compose.yml
-  jenkins:
+  # see 
+  #  - https://github.com/Douglas0n/jenkins-docker/blob/master/docker-compose.yml
+  #  - https://github.com/gounthar/MyFirstAndroidAppBuiltByJenkins/blob/main/jenkins/docker-compose.yml
+  jenkins-controller:
     build:
       context: ./src/jenkins
       dockerfile: Dockerfile
     # image: jenkins/jenkins:lts
+    networks:
+      - jenkins
+    environment:
+      DOCKER_HOST: tcp://docker:2376
+      DOCKER_CERT_PATH: /certs/client
+      DOCKER_TLS_VERIFY: '1'
     ports:
       - 8080:8080
       - 50000:50000
     volumes:
       - jenkins-data:/var/jenkins_home
+      - jenkins-docker-certs:/certs/client:ro
       # - /var/run/docker.sock:/var/run/docker.sock  # Bind mount Docker socket so jenkins can use docker
+  
+  # See
+  #  - https://www.jenkins.io/doc/book/installing/docker/#on-windows
+  docker:
+    image: docker:dind
+    privileged: true
+    networks:
+      - jenkins
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+    volumes:
+      - jenkins-docker-certs:/certs/client
+      - jenkins-data:/var/jenkins_home
+    ports:
+      - "2376:2376"
+  
   # jenkins-agent:
   #   image: jenkins/ssh-agent:jdk11
   #   # environment:
@@ -70,6 +94,8 @@ services:
   #   networks:
   #     - backend
 
+networks:
+  jenkins:
 
 volumes:
   sonarqube_conf:
@@ -80,6 +106,7 @@ volumes:
   sonar_db:
   sonar_db_data:
   jenkins-data:
-  jenkins-agent-data:
+  jenkins-docker-certs:
+  # jenkins-agent-data:
   qodana-data:
 
