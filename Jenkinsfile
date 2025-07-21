@@ -5,7 +5,8 @@ pipeline {
     agent any
 
     environment {
-        BUILD_NUMBER = "1.0.1"
+        BASE_VERSION = "1.0"
+        BUILD_NUMBER = "${BASE_VERSION}.${env.BUILD_NUMBER}"
     }
 
     stages {
@@ -33,10 +34,18 @@ pipeline {
                 sh 'docker compose up -d'
             }
         }
-        stage("integration test") {
+        stage("Integration Test") {
             steps {
-                sh 'docker compose exec web pytest tests --html=reports/pytest_report.html --self-contained-html --capture=tee-sys --log-cli-level=INFO'
-                archiveArtifacts artifacts: 'src/web/reports/reports/pytest_report.html', allowEmptyArchive: true
+                    def version = "${BASE_VERSION}.${env.BUILD_NUMBER}"
+                    sh """
+                        docker compose exec web \
+                        pytest tests \
+                        --html=reports/pytest_report_${version}.html \
+                        --self-contained-html \
+                        --capture=tee-sys \
+                        --log-cli-level=INFO
+                    """
+                    archiveArtifacts artifacts: "src/web/reports/pytest_report_${version}.html", allowEmptyArchive: true
             }
         }
 
@@ -45,8 +54,13 @@ pipeline {
                 branch 'dev'
             }
             steps {
-                sh 'docker compose exec k6 k6 run /k6-load-tests.js --out json=/src/web/reports/k6_report.json'
-                archiveArtifacts artifacts: 'src/web/reports/reports/k6_results.json', allowEmptyArchive: true
+                    def version = "${BASE_VERSION}.${env.BUILD_NUMBER}"
+                    sh """
+                        docker compose exec k6 \
+                        k6 run /k6-load-tests.js \
+                        --out json=/src/web/reports/k6_report_${version}.json
+                    """
+                    archiveArtifacts artifacts: "src/web/reports/k6_report_${version}.json", allowEmptyArchive: true
             }
         }
     }
