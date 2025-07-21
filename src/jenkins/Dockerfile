@@ -16,6 +16,9 @@ RUN apt-get update && apt-get install -y docker-ce-cli
 RUN apt-get update && apt-get install -y maven
 RUN mvn -v
 
+# # Setup known host
+# # RUN ssh-keyscan -H jenkins-agent >> /var/jenkins_home/.ssh/known_hosts
+
 RUN chown -R 1000:1000 /var/jenkins_home
 # USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api slack sonar htmlpublisher"

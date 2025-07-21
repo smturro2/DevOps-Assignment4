@@ -1,5 +1,6 @@
 # Project specific
 src/web/reports
+sshkeys
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -5,8 +5,6 @@ services:
   # ASKED CHAT GPT: I have a /docker-compose.yml file and a /src/db/schema.sql How do I create my sql db with the schema file?  I use mysql
 
   # see 
-  #  - https://github.com/Douglas0n/jenkins-docker/blob/master/docker-compose.yml
-  #  - https://github.com/gounthar/MyFirstAndroidAppBuiltByJenkins/blob/main/jenkins/docker-compose.yml
   jenkins-controller:
     build:
       context: ./src/jenkins
@@ -40,10 +38,18 @@ services:
     ports:
       - "2376:2376"
   
-  # jenkins-agent:
-  #   image: jenkins/ssh-agent:jdk11
-  #   # environment:
-  #   #   - JENKINS_AGENT_SSH_PUBKEY=${JENKINS_AGENT_SSH_PUBLIC_KEY}
+  jenkins-agent:
+    image: jenkins/ssh-agent:jdk21
+    privileged: true
+    user: root
+    networks:
+      - jenkins
+    expose:
+      - 22
+    environment:
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCq2PflaLUAtc5vhWd3W46S0UrWs5VZ0KMMC9kdvH7jB9Ln+VavqL2N1g8iRp3djdk/sKkDUWgdUlXLfEOT4RkrUKdN2pnuIupV5fIY4D8TadoRp65FHyDKBwApRpbC7pFHfWruMtVfUZqAMFmp5qAUwvtUxzYRHdBMEXkb1jFuuZEqSE+rpaCoyEX36Gj0KRlEp3WXdZYssxVwpV+vt+nYha0J/CL4lMd+SwPI27BZCZfL5hVnCRtF2bXyp9vUp1A9Vm+MdYAzJhOkJqgFQmkem0qV3ywZzwL0e2irE/JcakggoUdpN7V3WHhGj6KrJHWa+qqg/rx3x2rzsJn1eJFty+DHGtZLPl1Zozixo2P9oSJ+DQ30j96/cfmFjyRBMnBHuAtWnOYbgUDInxOo7UZx6+ruQJwr0klUdeZQamlF5tIyJ2wTXWfSTZgdaJIt8Jlqe2pVHYhIYwf2EEZCMqFj3SIEzvC0ohFgVR5Hka6wQZWqEgB1kg1wTOkOZqEp0PM= smturro2@DESKTOP-2TVSMU1
+    volumes:
+      - jenkins-agent-data:/home/jenkins/agent
 
   # see https://medium.com/@denis.verkhovsky/sonarqube-with-docker-compose-complete-tutorial-2aaa8d0771d4
   sonar_db:
@@ -79,7 +85,7 @@ services:
          
 
   # see: https://ngrok.com/docs/using-ngrok-with/docker/
-  ngrok-jenkins:
+  jenkins-ngrok:
     image: ngrok/ngrok:latest
     command:
       - "http"
@@ -151,6 +157,6 @@ volumes:
   sonar_db_data:
   jenkins-data:
   jenkins-docker-certs:
-  # jenkins-agent-data:
+  jenkins-agent-data:
   qodana-data:
 
