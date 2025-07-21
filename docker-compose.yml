@@ -77,7 +77,7 @@ services:
     build:
       context: ./src/k6
       dockerfile: Dockerfile
-    entrypoint: ["/bin/sh", "-c", "while :; do sleep 1; done"]
+    entrypoint: ["tail", "-f", "/dev/null"]
     environment:
       - API_ADDRESS=api
       - API_PORT=5000

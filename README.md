@@ -11,10 +11,12 @@
 # To ask
 - network
 - .env management
+- design overview
 - running containers in jenkins
 - cant get condition to work for frontend
 - jenkins cache kept fucking up
 - weird permission issues chmod
+- k6 testing
 
 # Docker tips
 
