@@ -24,7 +24,6 @@ services:
     volumes:
       - jenkins-data:/var/jenkins_home
       - jenkins-docker-certs:/certs/client:ro
-      # - /var/run/docker.sock:/var/run/docker.sock  # Bind mount Docker socket so jenkins can use docker
   
   # See
   #  - https://www.jenkins.io/doc/book/installing/docker/#on-windows
