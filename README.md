@@ -14,6 +14,7 @@
 - running containers in jenkins
 - cant get condition to work for frontend
 - jenkins cache kept fucking up
+- weird permission issues chmod
 
 # Docker tips
 
