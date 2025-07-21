@@ -3,6 +3,13 @@
 // - youtube tutorial: https://www.youtube.com/watch?v=ZPD_PzGOvFM
 pipeline {
     agent any
+
+    environment {
+        API_VERSION = "1.0.1"
+        WEB_VERSION = "1.0.1"
+        K6_VERSION = "1.0.1"
+    }
+
     stages {
         stage("Verify Tooling") {
             steps {
@@ -21,10 +28,20 @@ pipeline {
               }
             }
         }
-        
-        stage("build") {
+
+        stage('Build Docker Images') {
             steps {
-                sh 'docker compose up -d --build'
+                script {
+                    docker.build("countries-app/api:${API_VERSION}", './src/api')
+                    docker.build("countries-app/web:${WEB_VERSION}", './src/web')
+                    docker.build("countries-app/k6:${K6_VERSION}", './src/k6')
+                }
+            }
+        }
+        
+        stage("Run Docker Containers") {
+            steps {
+                sh 'docker compose up -d'
             }
         }
         stage("integration test") {
@@ -52,8 +69,8 @@ pipeline {
                 allowMissing: true,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
-                reportDir: 'reports',
-                reportFiles: 'src/web/reports/pytest_report.html',
+                reportDir: 'src/web/reports',
+                reportFiles: 'pytest_report.html',
                 reportName: 'Pytest Report',
                 reportTitles: 'Pytest Report'
             ])
@@ -63,7 +80,7 @@ pipeline {
                 allowMissing: true,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
-                reportDir: 'reports',
+                reportDir: 'src/web/reports',
                 reportFiles: 'src/web/reports/k6_report.json',
                 reportName: 'K6 Report',
                 reportTitles: 'K6 Report'
