@@ -33,7 +33,6 @@ pipeline {
 
         stage("Load Testing") {
             steps {
-                sh 'docker compose exec k6 chmod +x /k6-load-tests.js'
                 sh 'docker compose exec k6 /k6-load-tests.js --out json=reports/k6_report.json'
                 archiveArtifacts artifacts: 'src/web/reports/reports/k6_results.json', allowEmptyArchive: true
             }

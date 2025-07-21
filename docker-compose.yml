@@ -74,13 +74,14 @@ services:
 
 
   k6:
-    image: loadimpact/k6
+    build:
+      context: ./src/k6
+      dockerfile: Dockerfile
     entrypoint: ["tail", "-f", "/dev/null"]
     environment:
       - API_ADDRESS=api
       - API_PORT=5000
     volumes:
-      - ./k6-load-tests.js:/k6-load-tests.js
       - ./src/web/reports:/src/web/reports
     networks:
       - frontend
