@@ -40,29 +40,18 @@ Deliverables:
 
 Question 4: Build and Package
 
-Build application artifacts, version your builds using semantic versioning or build numbers, and store artifacts in Jenkins artifacts.
-
 Deliverables:
-
-- [] Build logs showing successful artifact creation
+- [X] Build logs showing successful artifact creation
 - [] Screenshots of versioned artifacts in Jenkins
 - [] Build configuration in Jenkinsfile
 
 Question 5: Code Quality Analysis
-
-Integrate with SonarQube to analyze code for bugs, vulnerabilities, and code smells, and configure quality gates that prevent deployment if quality standards aren't met.
-
-Deliverables:
 
 - [X] SonarQube project configuration screenshots
 - [X] SonarQube analysis reports with quality metrics
 - [] Quality gate configuration and pipeline failure evidence when standards not met
 
 Question 6: Database Management
-
-Write the staging database schema to build staging database from scratch and seed staging database with test data.
-
-Deliverables:
 
 - [X] Database schema scripts (SQL files or equivalent)
 - [X] Test data seeding scripts
