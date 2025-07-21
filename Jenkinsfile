@@ -27,16 +27,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Build Docker Images') {
-            steps {
-                script {
-                    docker.build("countries-app/api:${BUILD_NUMBER}", './src/api').push()
-                    docker.build("countries-app/web:${BUILD_NUMBER}", './src/web').push()
-                    docker.build("countries-app/k6:${BUILD_NUMBER}", './src/k6').push()
-                }
-            }
-        }
         
         stage("Run Docker Containers") {
             steps {
