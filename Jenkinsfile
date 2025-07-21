@@ -5,9 +5,7 @@ pipeline {
     agent any
 
     environment {
-        API_VERSION = "1.0.1"
-        WEB_VERSION = "1.0.1"
-        K6_VERSION = "1.0.1"
+        BUILD_NUMBER = "1.0.1"
     }
 
     stages {
@@ -20,10 +18,7 @@ pipeline {
         }
         stage("Static Testing") {
             steps {
-            //   withSonarQubeEnv('SonarQube') {
-            //     sh 'mvn clean package sonar:sonar'
-            //   }
-            // https://stackoverflow.com/questions/53849416/how-to-configure-jenkinsfile-to-analyze-python-code-with-sonar
+                // https://stackoverflow.com/questions/53849416/how-to-configure-jenkinsfile-to-analyze-python-code-with-sonar
                 script {
                     def scannerHome = tool 'SonarQube';
                     withSonarQubeEnv('SonarQube') {
@@ -36,9 +31,9 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    docker.build("countries-app/api:${API_VERSION}", './src/api')
-                    docker.build("countries-app/web:${WEB_VERSION}", './src/web')
-                    docker.build("countries-app/k6:${K6_VERSION}", './src/k6')
+                    docker.build("countries-app/api:${BUILD_NUMBER}", './src/api').push()
+                    docker.build("countries-app/web:${BUILD_NUMBER}", './src/web').push()
+                    docker.build("countries-app/k6:${BUILD_NUMBER}", './src/k6').push()
                 }
             }
         }
