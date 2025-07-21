@@ -54,7 +54,7 @@ Integrate with SonarQube to analyze code for bugs, vulnerabilities, and code sme
 
 Deliverables:
 
-- [] SonarQube project configuration screenshots
+- [X] SonarQube project configuration screenshots
 - [] SonarQube analysis reports with quality metrics
 - [] Quality gate configuration and pipeline failure evidence when standards not met
 
@@ -64,9 +64,9 @@ Write the staging database schema to build staging database from scratch and see
 
 Deliverables:
 
-- [] Database schema scripts (SQL files or equivalent)
-- [] Test data seeding scripts
-- [] Screenshots showing successful database creation and seeding
+- [X] Database schema scripts (SQL files or equivalent)
+- [X] Test data seeding scripts
+- [X] Screenshots showing successful database creation and seeding
 
 Question 7: End-to-End Testing
 
@@ -74,27 +74,19 @@ Execute one end-to-end test scenario that simulates real user workflows to test 
 
 Deliverables:
 
-- [] End-to-end test code/scripts
-- [] Test execution screenshots 
-- [] Generated test reports (HTML, XML, or similar format)
+- [X] End-to-end test code/scripts
+- [X] Test execution screenshots 
+- [X] Generated test reports (HTML, XML, or similar format)
 
 Question 8: Performance Testing
 
-Execute a single load test using tools like JMeter, k6, or Artillery, test application performance under expected load, generate performance reports, and set performance thresholds that must be met.
-
-Deliverables:
-
-- [] Load test configuration files
-- [] Performance test execution logs
-- [] Performance reports with metrics and thresholds
+- [X] Load test configuration files
+- [X] Performance test execution logs
+- [X] Performance reports with metrics and thresholds
 
 Question 9: Notification System
 
-Configure Slack or email notifications for pipeline status, send notifications for successful deployments, and alert team members for pipeline failures with error details.
-
-Deliverables:
-
-- [] Notification configuration in Jenkins
-- [] Screenshots of successful deployment notifications
-- [] Screenshots of failure notifications with error details
+- [X] Notification configuration in Jenkins
+- [X] Screenshots of successful deployment notifications
+- [X] Screenshots of failure notifications with error details
 

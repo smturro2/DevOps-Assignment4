@@ -53,6 +53,7 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: countriesdb
+      MYSQL_LOG_QUERIES: 1
       FLASK_ENV: development
     networks:
       - frontend
