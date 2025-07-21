@@ -33,11 +33,7 @@ pipeline {
 
         stage("Load Testing") {
             steps {
-                // sh 'docker compose exec k6 run /k6-load-tests.js --out json=/src/web/reports/k6_report.json'
-
-                sh 'docker build -t my-k6-image ./src/k6'
-                sh 'docker run --rm --network=${env.NETWORK_NAME} -v $PWD/src/web/reports:/src/web/reports my-k6-image'
-
+                sh 'docker compose exec k6 run /k6-load-tests.js --out json=/src/web/reports/k6_report.json'
                 archiveArtifacts artifacts: 'src/web/reports/reports/k6_results.json', allowEmptyArchive: true
             }
         }
