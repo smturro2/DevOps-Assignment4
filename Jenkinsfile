@@ -24,7 +24,7 @@ pipeline {
                 sh 'docker compose up -d --build'
             }
         }
-        // stage("integreation test") {
+        // stage("integration test") {
         //     steps {
         //         sh 'docker compose exec web pytest tests --html=reports/pytest_report.html --self-contained-html --capture=tee-sys --log-cli-level=INFO'
         //         archiveArtifacts artifacts: 'src/web/reports/reports/pytest_report.html', allowEmptyArchive: true
@@ -33,7 +33,7 @@ pipeline {
 
         stage("Load Testing") {
             steps {
-                sh 'docker compose exec k6 run /k6-load-tests.js --out json=reports/k6_report.json'
+                sh 'docker compose exec k6 /k6-load-tests.js --out json=reports/k6_report.json'
                 archiveArtifacts artifacts: 'src/web/reports/reports/k6_results.json', allowEmptyArchive: true
             }
         }
