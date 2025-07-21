@@ -24,10 +24,12 @@ pipeline {
             //     sh 'mvn clean package sonar:sonar'
             //   }
             // https://stackoverflow.com/questions/53849416/how-to-configure-jenkinsfile-to-analyze-python-code-with-sonar
-            def scannerHome = tool 'SonarQube Scanner 7.10.4889';
-            withSonarQubeEnv('SonarQube') {
-                sh "${scannerHome}/bin/sonar-scanner"
-            }
+                script {
+                    def scannerHome = tool 'SonarQube Scanner 7.10.4889';
+                    withSonarQubeEnv('SonarQube') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
             }
         }
 
