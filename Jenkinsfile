@@ -36,6 +36,7 @@ pipeline {
         }
         stage("Integration Test") {
             steps {
+                script {
                     def version = "${BASE_VERSION}.${env.BUILD_NUMBER}"
                     sh """
                         docker compose exec web \
@@ -46,6 +47,7 @@ pipeline {
                         --log-cli-level=INFO
                     """
                     archiveArtifacts artifacts: "src/web/reports/pytest_report_${version}.html", allowEmptyArchive: true
+                }
             }
         }
 
@@ -54,6 +56,7 @@ pipeline {
                 branch 'dev'
             }
             steps {
+                script {
                     def version = "${BASE_VERSION}.${env.BUILD_NUMBER}"
                     sh """
                         docker compose exec k6 \
@@ -61,6 +64,7 @@ pipeline {
                         --out json=/src/web/reports/k6_report_${version}.json
                     """
                     archiveArtifacts artifacts: "src/web/reports/k6_report_${version}.json", allowEmptyArchive: true
+                }
             }
         }
     }
