@@ -78,6 +78,7 @@ services:
     entrypoint: ["tail", "-f", "/dev/null"]
     volumes:
       - ./k6-load-tests.js:/k6-load-tests.js
+      - ./src/web/reports:/src/web/reports
     networks:
       - frontend
     # # todo cant get this to work
