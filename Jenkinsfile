@@ -46,8 +46,8 @@ pipeline {
         always {
             sh 'docker compose down'
 
-            Publish pytest reports
-            see: https://plugins.jenkins.io/htmlpublisher/
+            // Publish pytest reports
+            // see: https://plugins.jenkins.io/htmlpublisher/
             publishHTML (target : [
                 allowMissing: true,
                 alwaysLinkToLastBuild: true,
@@ -75,7 +75,7 @@ pipeline {
         }
         failure {
             slackSend (
-                color: "bad",
+                color: "danger",
                 message: "Pipeline FAILED!\n" +
                             "Job: ${env.JOB_NAME}\n" + 
                             "Build Number: ${env.BUILD_NUMBER}\n" +
