@@ -71,17 +71,13 @@ pipeline {
             slackSend color: "good", message: "Pipeline PASSED"
         }
         failure {
-            def jobName = env.JOB_NAME
-            def buildNumber = env.BUILD_NUMBER
-            def buildUrl = env.BUILD_URL
-            def stageName = env.STAGE_NAME
             slackSend (
                 color: "bad",
                 message: "Pipeline FAILED!\n" +
-                            "Job: ${jobName}\n" + 
-                            "Build Number: ${buildNumber}\n" +
-                            "Failed Stage: ${stageName}\n" +
-                            "See details: ${buildUrl}"
+                            "Job: ${env.JOB_NAME}\n" + 
+                            "Build Number: ${env.BUILD_NUMBER}\n" +
+                            "Failed Stage: ${env.BUILD_URL}\n" +
+                            "See details: ${env.STAGE_NAME}"
             )
             
         }
