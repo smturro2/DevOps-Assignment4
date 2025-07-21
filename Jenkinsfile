@@ -18,13 +18,11 @@ pipeline {
                 sh 'docker compose version'
             }
         }
-        stage("Static Testing (dev only)") {
-            when {
-                branch 'dev'
-            }
+        stage("Static Testing") {
             steps {
               withSonarQubeEnv('SonarQube') {
-                sh 'mvn clean package sonar:sonar'
+                // sh 'mvn clean package sonar:sonar'
+                 sh 'sonar-scanner'
               }
             }
         }
@@ -51,7 +49,10 @@ pipeline {
             }
         }
 
-        stage("Load Testing") {
+        stage("Load Testing (dev only)") {
+            when {
+                branch 'dev'
+            }
             steps {
                 sh 'docker compose exec k6 k6 run /k6-load-tests.js --out json=/src/web/reports/k6_report.json'
                 archiveArtifacts artifacts: 'src/web/reports/reports/k6_results.json', allowEmptyArchive: true
